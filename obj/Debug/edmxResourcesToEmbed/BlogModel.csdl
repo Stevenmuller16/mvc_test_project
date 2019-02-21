@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="nologodbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Post">
+    <Key>
+      <PropertyRef Name="PostID" />
+    </Key>
+    <Property Name="PostID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="FK_UserID" Type="Int64" />
+    <Property Name="PostTitle" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="PostDate" Type="DateTime" Precision="3" />
+    <Property Name="PostAuthor" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="PostBody" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="PostImage" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="UserAccount" Relationship="Self.FK_Post_User" FromRole="Post" ToRole="UserAccount" />
+    <NavigationProperty Name="Tags" Relationship="Self.FK_Tags_Post" FromRole="Post" ToRole="Tags" />
+  </EntityType>
+  <EntityType Name="Tag">
+    <Key>
+      <PropertyRef Name="TagID" />
+    </Key>
+    <Property Name="TagID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="FK_PostID" Type="Int64" />
+    <Property Name="Tag1" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Post" Relationship="Self.FK_Tags_Post" FromRole="Tags" ToRole="Post" />
+  </EntityType>
+  <EntityType Name="UserAccount">
+    <Key>
+      <PropertyRef Name="UserAccountID" />
+    </Key>
+    <Property Name="UserAccountID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserAccountName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="UserAccountPassword" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Posts" Relationship="Self.FK_Post_User" FromRole="UserAccount" ToRole="Post" />
+  </EntityType>
+  <Association Name="FK_Post_User">
+    <End Role="UserAccount" Type="Self.UserAccount" Multiplicity="0..1" />
+    <End Role="Post" Type="Self.Post" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserAccount">
+        <PropertyRef Name="UserAccountID" />
+      </Principal>
+      <Dependent Role="Post">
+        <PropertyRef Name="FK_UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Tags_Post">
+    <End Role="Post" Type="Self.Post" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Tags" Type="Self.Tag" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Post">
+        <PropertyRef Name="PostID" />
+      </Principal>
+      <Dependent Role="Tags">
+        <PropertyRef Name="FK_PostID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="nologodbEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Posts" EntityType="Self.Post" />
+    <EntitySet Name="Tags" EntityType="Self.Tag" />
+    <EntitySet Name="UserAccounts" EntityType="Self.UserAccount" />
+    <AssociationSet Name="FK_Post_User" Association="Self.FK_Post_User">
+      <End Role="UserAccount" EntitySet="UserAccounts" />
+      <End Role="Post" EntitySet="Posts" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Tags_Post" Association="Self.FK_Tags_Post">
+      <End Role="Post" EntitySet="Posts" />
+      <End Role="Tags" EntitySet="Tags" />
+    </AssociationSet>
+    <FunctionImport Name="Delete_Post">
+      <Parameter Name="PostID" Mode="In" Type="Int64" />
+    </FunctionImport>
+    <FunctionImport Name="Insert_Post" ReturnType="Collection(Int32)">
+      <Parameter Name="PostTitle" Mode="In" Type="String" />
+      <Parameter Name="PostDate" Mode="In" Type="DateTime" />
+      <Parameter Name="PostAuthor" Mode="In" Type="String" />
+      <Parameter Name="PostBody" Mode="In" Type="String" />
+      <Parameter Name="PostImage" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="Insert_User" ReturnType="Collection(Decimal)">
+      <Parameter Name="UserName" Mode="In" Type="String" />
+      <Parameter Name="Password" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="Update_Post">
+      <Parameter Name="PostID" Mode="In" Type="Int64" />
+      <Parameter Name="PostTitle" Mode="In" Type="String" />
+      <Parameter Name="PostDate" Mode="In" Type="String" />
+      <Parameter Name="PostAuthor" Mode="In" Type="String" />
+      <Parameter Name="PostBody" Mode="In" Type="String" />
+      <Parameter Name="PostImage" Mode="In" Type="String" />
+    </FunctionImport>
+  </EntityContainer>
+</Schema>

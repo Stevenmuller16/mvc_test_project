@@ -1,0 +1,150 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="TournamentModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Event">
+    <Key>
+      <PropertyRef Name="EventID" />
+    </Key>
+    <Property Name="EventID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="FK_TournamentID" Type="Int64" />
+    <Property Name="EventName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="EventNumber" Type="Int16" />
+    <Property Name="EventDateTime" Type="DateTime" Precision="3" />
+    <Property Name="EventEndDateTime" Type="DateTime" Precision="3" />
+    <Property Name="AutoClose" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Tournament" Relationship="Self.FK_Event_Tournament" FromRole="Event" ToRole="Tournament" />
+    <NavigationProperty Name="EventDetails" Relationship="Self.FK_EventDetail_Event" FromRole="Event" ToRole="EventDetail" />
+  </EntityType>
+  <EntityType Name="EventDetail">
+    <Key>
+      <PropertyRef Name="EventDetailID" />
+    </Key>
+    <Property Name="EventDetailID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="FK_EventID" Type="Int64" />
+    <Property Name="FK_EventDetailStatusID" Type="Int16" />
+    <Property Name="EventDetailName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="EventDetailNumber" Type="Int16" />
+    <Property Name="EventDetailOdd" Type="Decimal" Precision="18" Scale="7" />
+    <Property Name="FinishingPosition" Type="Int16" />
+    <Property Name="FirstTimer" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Event" Relationship="Self.FK_EventDetail_Event" FromRole="EventDetail" ToRole="Event" />
+    <NavigationProperty Name="EventDetailStatu" Relationship="Self.FK_EventDetail_EventDetailStatus" FromRole="EventDetail" ToRole="EventDetailStatus" />
+  </EntityType>
+  <EntityType Name="EventDetailStatu">
+    <Key>
+      <PropertyRef Name="EventDetailStatusID" />
+    </Key>
+    <Property Name="EventDetailStatusID" Type="Int16" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="EventDetailStatusName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="EventDetails" Relationship="Self.FK_EventDetail_EventDetailStatus" FromRole="EventDetailStatus" ToRole="EventDetail" />
+  </EntityType>
+  <EntityType Name="Tournament">
+    <Key>
+      <PropertyRef Name="TournamentID" />
+    </Key>
+    <Property Name="TournamentID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TournamentName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Events" Relationship="Self.FK_Event_Tournament" FromRole="Tournament" ToRole="Event" />
+  </EntityType>
+  <EntityType Name="UserAccount">
+    <Key>
+      <PropertyRef Name="UserAccountID" />
+    </Key>
+    <Property Name="UserAccountID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserAccountName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="UserAccountPassword" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="UserAccountRole" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <Association Name="FK_Event_Tournament">
+    <End Role="Tournament" Type="Self.Tournament" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Event" Type="Self.Event" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Tournament">
+        <PropertyRef Name="TournamentID" />
+      </Principal>
+      <Dependent Role="Event">
+        <PropertyRef Name="FK_TournamentID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_EventDetail_Event">
+    <End Role="Event" Type="Self.Event" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="EventDetail" Type="Self.EventDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Event">
+        <PropertyRef Name="EventID" />
+      </Principal>
+      <Dependent Role="EventDetail">
+        <PropertyRef Name="FK_EventID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_EventDetail_EventDetailStatus">
+    <End Role="EventDetailStatus" Type="Self.EventDetailStatu" Multiplicity="0..1" />
+    <End Role="EventDetail" Type="Self.EventDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="EventDetailStatus">
+        <PropertyRef Name="EventDetailStatusID" />
+      </Principal>
+      <Dependent Role="EventDetail">
+        <PropertyRef Name="FK_EventDetailStatusID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="HollywoodTestEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Events" EntityType="Self.Event" />
+    <EntitySet Name="EventDetails" EntityType="Self.EventDetail" />
+    <EntitySet Name="EventDetailStatus" EntityType="Self.EventDetailStatu" />
+    <EntitySet Name="Tournaments" EntityType="Self.Tournament" />
+    <EntitySet Name="UserAccounts" EntityType="Self.UserAccount" />
+    <AssociationSet Name="FK_Event_Tournament" Association="Self.FK_Event_Tournament">
+      <End Role="Tournament" EntitySet="Tournaments" />
+      <End Role="Event" EntitySet="Events" />
+    </AssociationSet>
+    <AssociationSet Name="FK_EventDetail_Event" Association="Self.FK_EventDetail_Event">
+      <End Role="Event" EntitySet="Events" />
+      <End Role="EventDetail" EntitySet="EventDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK_EventDetail_EventDetailStatus" Association="Self.FK_EventDetail_EventDetailStatus">
+      <End Role="EventDetailStatus" EntitySet="EventDetailStatus" />
+      <End Role="EventDetail" EntitySet="EventDetails" />
+    </AssociationSet>
+    <FunctionImport Name="Validate_User" ReturnType="Collection(Int32)">
+      <Parameter Name="Username" Mode="In" Type="String" />
+      <Parameter Name="Password" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="ValidateUser" EntitySet="UserAccounts" ReturnType="Collection(TournamentModel.UserAccount)">
+      <Parameter Name="Username" Mode="In" Type="String" />
+      <Parameter Name="Password" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="Insert_Tournament" ReturnType="Collection(Int32)">
+      <Parameter Name="TournamentName" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="Update_Tournament">
+      <Parameter Name="TournamentID" Mode="In" Type="Int64" />
+      <Parameter Name="TournamentName" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="Delete_Tournament">
+      <Parameter Name="TournamentID" Mode="In" Type="Int64" />
+    </FunctionImport>
+    <FunctionImport Name="Insert_Event" ReturnType="Collection(Decimal)">
+      <Parameter Name="EventName" Mode="In" Type="String" />
+      <Parameter Name="FK_TournamentID" Mode="In" Type="Int64" />
+      <Parameter Name="EventNumber" Mode="In" Type="Int32" />
+      <Parameter Name="EventDateTime" Mode="In" Type="DateTime" />
+      <Parameter Name="EventEndDateTime" Mode="In" Type="DateTime" />
+      <Parameter Name="AutoClose" Mode="In" Type="Boolean" />
+    </FunctionImport>
+    <FunctionImport Name="Insert_User">
+      <Parameter Name="UserName" Mode="In" Type="String" />
+      <Parameter Name="Password" Mode="In" Type="String" />
+      <Parameter Name="Role" Mode="In" Type="String" />
+    </FunctionImport>
+  </EntityContainer>
+  <ComplexType Name="ValidateUser_Result">
+    <Property Type="Int32" Name="Column1" Nullable="true" />
+  </ComplexType>
+</Schema>

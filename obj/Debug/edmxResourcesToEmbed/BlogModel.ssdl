@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="nologodbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Post">
+    <Key>
+      <PropertyRef Name="PostID" />
+    </Key>
+    <Property Name="PostID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FK_UserID" Type="bigint" />
+    <Property Name="PostTitle" Type="nvarchar" MaxLength="200" />
+    <Property Name="PostDate" Type="datetime" />
+    <Property Name="PostAuthor" Type="nvarchar" MaxLength="200" />
+    <Property Name="PostBody" Type="nvarchar" MaxLength="255" />
+    <Property Name="PostImage" Type="nvarchar" MaxLength="255" />
+  </EntityType>
+  <EntityType Name="Tags">
+    <Key>
+      <PropertyRef Name="TagID" />
+    </Key>
+    <Property Name="TagID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FK_PostID" Type="bigint" />
+    <Property Name="Tag" Type="nvarchar" MaxLength="100" Nullable="false" />
+  </EntityType>
+  <EntityType Name="UserAccount">
+    <Key>
+      <PropertyRef Name="UserAccountID" />
+    </Key>
+    <Property Name="UserAccountID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserAccountName" Type="nvarchar" MaxLength="50" />
+    <Property Name="UserAccountPassword" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <Association Name="FK_Post_User">
+    <End Role="UserAccount" Type="Self.UserAccount" Multiplicity="0..1" />
+    <End Role="Post" Type="Self.Post" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserAccount">
+        <PropertyRef Name="UserAccountID" />
+      </Principal>
+      <Dependent Role="Post">
+        <PropertyRef Name="FK_UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Tags_Post">
+    <End Role="Post" Type="Self.Post" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Tags" Type="Self.Tags" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Post">
+        <PropertyRef Name="PostID" />
+      </Principal>
+      <Dependent Role="Tags">
+        <PropertyRef Name="FK_PostID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Function Name="Delete_Post" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="PostID" Type="bigint" Mode="In" />
+  </Function>
+  <Function Name="Insert_Post" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="PostTitle" Type="nvarchar" Mode="In" />
+    <Parameter Name="PostDate" Type="datetime" Mode="In" />
+    <Parameter Name="PostAuthor" Type="nvarchar" Mode="In" />
+    <Parameter Name="PostBody" Type="nvarchar" Mode="In" />
+    <Parameter Name="PostImage" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="Insert_User" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="UserName" Type="nvarchar" Mode="In" />
+    <Parameter Name="Password" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="Update_Post" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="PostID" Type="bigint" Mode="In" />
+    <Parameter Name="PostTitle" Type="nvarchar" Mode="In" />
+    <Parameter Name="PostDate" Type="nvarchar" Mode="In" />
+    <Parameter Name="PostAuthor" Type="nvarchar" Mode="In" />
+    <Parameter Name="PostBody" Type="nvarchar" Mode="In" />
+    <Parameter Name="PostImage" Type="nvarchar" Mode="In" />
+  </Function>
+  <EntityContainer Name="nologodbModelStoreContainer">
+    <EntitySet Name="Post" EntityType="Self.Post" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Tags" EntityType="Self.Tags" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="UserAccount" EntityType="Self.UserAccount" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_Post_User" Association="Self.FK_Post_User">
+      <End Role="UserAccount" EntitySet="UserAccount" />
+      <End Role="Post" EntitySet="Post" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Tags_Post" Association="Self.FK_Tags_Post">
+      <End Role="Post" EntitySet="Post" />
+      <End Role="Tags" EntitySet="Tags" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

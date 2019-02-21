@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="nologodbModelStoreContainer" CdmEntityContainer="nologodbEntities">
+    <EntitySetMapping Name="Posts">
+      <EntityTypeMapping TypeName="nologodbModel.Post">
+        <MappingFragment StoreEntitySet="Post">
+          <ScalarProperty Name="PostID" ColumnName="PostID" />
+          <ScalarProperty Name="FK_UserID" ColumnName="FK_UserID" />
+          <ScalarProperty Name="PostTitle" ColumnName="PostTitle" />
+          <ScalarProperty Name="PostDate" ColumnName="PostDate" />
+          <ScalarProperty Name="PostAuthor" ColumnName="PostAuthor" />
+          <ScalarProperty Name="PostBody" ColumnName="PostBody" />
+          <ScalarProperty Name="PostImage" ColumnName="PostImage" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Tags">
+      <EntityTypeMapping TypeName="nologodbModel.Tag">
+        <MappingFragment StoreEntitySet="Tags">
+          <ScalarProperty Name="TagID" ColumnName="TagID" />
+          <ScalarProperty Name="FK_PostID" ColumnName="FK_PostID" />
+          <ScalarProperty Name="Tag1" ColumnName="Tag" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserAccounts">
+      <EntityTypeMapping TypeName="nologodbModel.UserAccount">
+        <MappingFragment StoreEntitySet="UserAccount">
+          <ScalarProperty Name="UserAccountID" ColumnName="UserAccountID" />
+          <ScalarProperty Name="UserAccountName" ColumnName="UserAccountName" />
+          <ScalarProperty Name="UserAccountPassword" ColumnName="UserAccountPassword" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="Delete_Post" FunctionName="nologodbModel.Store.Delete_Post" />
+    <FunctionImportMapping FunctionImportName="Insert_Post" FunctionName="nologodbModel.Store.Insert_Post" />
+    <FunctionImportMapping FunctionImportName="Insert_User" FunctionName="nologodbModel.Store.Insert_User" />
+    <FunctionImportMapping FunctionImportName="Update_Post" FunctionName="nologodbModel.Store.Update_Post" />
+  </EntityContainerMapping>
+</Mapping>

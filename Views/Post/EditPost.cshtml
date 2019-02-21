@@ -1,0 +1,59 @@
+﻿@model MVC_Challenge.Post
+@{
+    ViewBag.Title = "CreateTournament";
+}
+
+<h2>CreateTournament</h2>
+
+@Html.ActionLink("Back To Posts", "Posts", "Post")
+@using (Html.BeginForm("EditedPost", "Post", FormMethod.Post))
+{
+    @Html.HiddenFor(n => n.PostID)
+    <div class="form-group">
+        <label class="control-label col-md-2" for="PostTitle">Post Title</label>
+        <div class="col-md-10">
+            @Html.LabelFor(n => n.PostTitle)
+            @Html.TextBoxFor(n => n.PostTitle, new { @class = "form-control" })
+            @Html.ValidationMessageFor(n => n.PostTitle, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-md-2" for="PostTitle">Post Title</label>
+        <div class="col-md-10">
+            @Html.LabelFor(n => n.PostDate)
+            @Html.TextBoxFor(n => n.PostDate, new { @class = "form-control" })
+            @Html.ValidationMessageFor(n => n.PostDate, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-md-2" for="PostTitle">Post Title</label>
+        <div class="col-md-10">
+            @Html.LabelFor(n => n.PostAuthor)
+            @Html.TextBoxFor(n => n.PostAuthor, new { @class = "form-control" })
+            @Html.ValidationMessageFor(n => n.PostAuthor, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-md-2" for="PostTitle">Post Title</label>
+        <div class="col-md-10">
+            @Html.LabelFor(n => n.PostBody)
+            @Html.TextBoxFor(n => n.PostBody, new { @class = "form-control" })
+            @Html.ValidationMessageFor(n => n.PostBody, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-md-2" for="PostTitle">Post Title</label>
+        <div class="col-md-10">
+            @Html.LabelFor(n => n.PostImage)
+            @Html.TextBoxFor(n => n.PostImage, new { @class = "form-control" })
+            @Html.ValidationMessageFor(n => n.PostImage, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+
+    <button type="submit" class="btn btn-success">Edit Tournament</button>
+}

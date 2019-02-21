@@ -1,0 +1,259 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="nologodbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Post">
+          <Key>
+            <PropertyRef Name="PostID" />
+          </Key>
+          <Property Name="PostID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FK_UserID" Type="bigint" />
+          <Property Name="PostTitle" Type="nvarchar" MaxLength="200" />
+          <Property Name="PostDate" Type="datetime" />
+          <Property Name="PostAuthor" Type="nvarchar" MaxLength="200" />
+          <Property Name="PostBody" Type="nvarchar" MaxLength="255" />
+          <Property Name="PostImage" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="Tags">
+          <Key>
+            <PropertyRef Name="TagID" />
+          </Key>
+          <Property Name="TagID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FK_PostID" Type="bigint" />
+          <Property Name="Tag" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserAccount">
+          <Key>
+            <PropertyRef Name="UserAccountID" />
+          </Key>
+          <Property Name="UserAccountID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserAccountName" Type="nvarchar" MaxLength="50" />
+          <Property Name="UserAccountPassword" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK_Post_User">
+          <End Role="UserAccount" Type="Self.UserAccount" Multiplicity="0..1" />
+          <End Role="Post" Type="Self.Post" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserAccount">
+              <PropertyRef Name="UserAccountID" />
+            </Principal>
+            <Dependent Role="Post">
+              <PropertyRef Name="FK_UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tags_Post">
+          <End Role="Post" Type="Self.Post" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Tags" Type="Self.Tags" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Post">
+              <PropertyRef Name="PostID" />
+            </Principal>
+            <Dependent Role="Tags">
+              <PropertyRef Name="FK_PostID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="Delete_Post" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="PostID" Type="bigint" Mode="In" />
+        </Function>
+        <Function Name="Insert_Post" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="PostTitle" Type="nvarchar" Mode="In" />
+          <Parameter Name="PostDate" Type="datetime" Mode="In" />
+          <Parameter Name="PostAuthor" Type="nvarchar" Mode="In" />
+          <Parameter Name="PostBody" Type="nvarchar" Mode="In" />
+          <Parameter Name="PostImage" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="Insert_User" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="UserName" Type="nvarchar" Mode="In" />
+          <Parameter Name="Password" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="Update_Post" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="PostID" Type="bigint" Mode="In" />
+          <Parameter Name="PostTitle" Type="nvarchar" Mode="In" />
+          <Parameter Name="PostDate" Type="nvarchar" Mode="In" />
+          <Parameter Name="PostAuthor" Type="nvarchar" Mode="In" />
+          <Parameter Name="PostBody" Type="nvarchar" Mode="In" />
+          <Parameter Name="PostImage" Type="nvarchar" Mode="In" />
+        </Function>
+        <EntityContainer Name="nologodbModelStoreContainer">
+          <EntitySet Name="Post" EntityType="Self.Post" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tags" EntityType="Self.Tags" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserAccount" EntityType="Self.UserAccount" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Post_User" Association="Self.FK_Post_User">
+            <End Role="UserAccount" EntitySet="UserAccount" />
+            <End Role="Post" EntitySet="Post" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tags_Post" Association="Self.FK_Tags_Post">
+            <End Role="Post" EntitySet="Post" />
+            <End Role="Tags" EntitySet="Tags" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="nologodbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Post">
+          <Key>
+            <PropertyRef Name="PostID" />
+          </Key>
+          <Property Name="PostID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FK_UserID" Type="Int64" />
+          <Property Name="PostTitle" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="PostDate" Type="DateTime" Precision="3" />
+          <Property Name="PostAuthor" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="PostBody" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="PostImage" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="UserAccount" Relationship="Self.FK_Post_User" FromRole="Post" ToRole="UserAccount" />
+          <NavigationProperty Name="Tags" Relationship="Self.FK_Tags_Post" FromRole="Post" ToRole="Tags" />
+        </EntityType>
+        <EntityType Name="Tag">
+          <Key>
+            <PropertyRef Name="TagID" />
+          </Key>
+          <Property Name="TagID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FK_PostID" Type="Int64" />
+          <Property Name="Tag1" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Post" Relationship="Self.FK_Tags_Post" FromRole="Tags" ToRole="Post" />
+        </EntityType>
+        <EntityType Name="UserAccount">
+          <Key>
+            <PropertyRef Name="UserAccountID" />
+          </Key>
+          <Property Name="UserAccountID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserAccountName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UserAccountPassword" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Posts" Relationship="Self.FK_Post_User" FromRole="UserAccount" ToRole="Post" />
+        </EntityType>
+        <Association Name="FK_Post_User">
+          <End Role="UserAccount" Type="Self.UserAccount" Multiplicity="0..1" />
+          <End Role="Post" Type="Self.Post" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserAccount">
+              <PropertyRef Name="UserAccountID" />
+            </Principal>
+            <Dependent Role="Post">
+              <PropertyRef Name="FK_UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tags_Post">
+          <End Role="Post" Type="Self.Post" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Tags" Type="Self.Tag" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Post">
+              <PropertyRef Name="PostID" />
+            </Principal>
+            <Dependent Role="Tags">
+              <PropertyRef Name="FK_PostID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="nologodbEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Posts" EntityType="Self.Post" />
+          <EntitySet Name="Tags" EntityType="Self.Tag" />
+          <EntitySet Name="UserAccounts" EntityType="Self.UserAccount" />
+          <AssociationSet Name="FK_Post_User" Association="Self.FK_Post_User">
+            <End Role="UserAccount" EntitySet="UserAccounts" />
+            <End Role="Post" EntitySet="Posts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tags_Post" Association="Self.FK_Tags_Post">
+            <End Role="Post" EntitySet="Posts" />
+            <End Role="Tags" EntitySet="Tags" />
+          </AssociationSet>
+          <FunctionImport Name="Delete_Post">
+            <Parameter Name="PostID" Mode="In" Type="Int64" />
+          </FunctionImport>
+          <FunctionImport Name="Insert_Post" ReturnType="Collection(Int32)">
+            <Parameter Name="PostTitle" Mode="In" Type="String" />
+            <Parameter Name="PostDate" Mode="In" Type="DateTime" />
+            <Parameter Name="PostAuthor" Mode="In" Type="String" />
+            <Parameter Name="PostBody" Mode="In" Type="String" />
+            <Parameter Name="PostImage" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="Insert_User" ReturnType="Collection(Decimal)">
+            <Parameter Name="UserName" Mode="In" Type="String" />
+            <Parameter Name="Password" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="Update_Post">
+            <Parameter Name="PostID" Mode="In" Type="Int64" />
+            <Parameter Name="PostTitle" Mode="In" Type="String" />
+            <Parameter Name="PostDate" Mode="In" Type="String" />
+            <Parameter Name="PostAuthor" Mode="In" Type="String" />
+            <Parameter Name="PostBody" Mode="In" Type="String" />
+            <Parameter Name="PostImage" Mode="In" Type="String" />
+          </FunctionImport>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="nologodbModelStoreContainer" CdmEntityContainer="nologodbEntities">
+          <EntitySetMapping Name="Posts">
+            <EntityTypeMapping TypeName="nologodbModel.Post">
+              <MappingFragment StoreEntitySet="Post">
+                <ScalarProperty Name="PostID" ColumnName="PostID" />
+                <ScalarProperty Name="FK_UserID" ColumnName="FK_UserID" />
+                <ScalarProperty Name="PostTitle" ColumnName="PostTitle" />
+                <ScalarProperty Name="PostDate" ColumnName="PostDate" />
+                <ScalarProperty Name="PostAuthor" ColumnName="PostAuthor" />
+                <ScalarProperty Name="PostBody" ColumnName="PostBody" />
+                <ScalarProperty Name="PostImage" ColumnName="PostImage" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tags">
+            <EntityTypeMapping TypeName="nologodbModel.Tag">
+              <MappingFragment StoreEntitySet="Tags">
+                <ScalarProperty Name="TagID" ColumnName="TagID" />
+                <ScalarProperty Name="FK_PostID" ColumnName="FK_PostID" />
+                <ScalarProperty Name="Tag1" ColumnName="Tag" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserAccounts">
+            <EntityTypeMapping TypeName="nologodbModel.UserAccount">
+              <MappingFragment StoreEntitySet="UserAccount">
+                <ScalarProperty Name="UserAccountID" ColumnName="UserAccountID" />
+                <ScalarProperty Name="UserAccountName" ColumnName="UserAccountName" />
+                <ScalarProperty Name="UserAccountPassword" ColumnName="UserAccountPassword" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="Delete_Post" FunctionName="nologodbModel.Store.Delete_Post" />
+          <FunctionImportMapping FunctionImportName="Insert_Post" FunctionName="nologodbModel.Store.Insert_Post" />
+          <FunctionImportMapping FunctionImportName="Insert_User" FunctionName="nologodbModel.Store.Insert_User" />
+          <FunctionImportMapping FunctionImportName="Update_Post" FunctionName="nologodbModel.Store.Update_Post" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,68 @@
+﻿@model MVC_Challenge.UserAccount
+
+@{
+    /**/
+
+    ViewBag.Title = "Login";
+}
+
+@using (Html.BeginForm("Login", "Home", FormMethod.Post))
+{
+<fieldset>
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @if (@ViewBag.Message != null)
+    {
+        <div style="border: 1px solid red">
+            @ViewBag.Message
+        </div>
+    }
+
+    <div class="container pb-5" style="padding-top: 30%;">
+
+        <!--<div class="row">-->
+        <div class="d-flex justify-content-center h-100 ">
+            
+            <div class="card">
+                <h1 class="text-center nameColor pt-1">Nologo MVC App</h1>
+                <div class="card-header">
+                    <h3>Sign In</h3>
+                </div>
+                <div class="card-body">
+                    <form>
+                        <div class="input-group form-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                <input id="UserAccountName" class="form-control" name="UserAccountName" type="text" value="" placeholder="Username">
+                            </div>
+                        </div>
+                        <div class="input-group form-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-key"></i></span>
+                                <input id="UserAccountPassword" class="form-control" name="UserAccountPassword" type="password" placeholder="Password">
+                            </div>
+                        </div>
+                        <div class="row align-items-center remember">
+                            <input type="checkbox">Remember Me
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" value="Login" id="login_btn" class="btn float-right">
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer">
+                    <div class="d-flex justify-content-center links">
+                        Don't have an account?@Html.ActionLink("Sign Up", "Create", "Login")
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <a href="#">Forgot your password?</a>
+                    </div>
+                </div>
+            </div>
+            <!--</div>-->
+        </div>
+    </div>
+
+</fieldset>
+}
+

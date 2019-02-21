@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="TournamentModelStoreContainer" CdmEntityContainer="HollywoodTestEntities">
+    <EntitySetMapping Name="Events">
+      <EntityTypeMapping TypeName="TournamentModel.Event">
+        <MappingFragment StoreEntitySet="Event">
+          <ScalarProperty Name="EventID" ColumnName="EventID" />
+          <ScalarProperty Name="FK_TournamentID" ColumnName="FK_TournamentID" />
+          <ScalarProperty Name="EventName" ColumnName="EventName" />
+          <ScalarProperty Name="EventNumber" ColumnName="EventNumber" />
+          <ScalarProperty Name="EventDateTime" ColumnName="EventDateTime" />
+          <ScalarProperty Name="EventEndDateTime" ColumnName="EventEndDateTime" />
+          <ScalarProperty Name="AutoClose" ColumnName="AutoClose" />
+        </MappingFragment>
+      </EntityTypeMapping>
+      <EntityTypeMapping TypeName="TournamentModel.Event">
+        <ModificationFunctionMapping>
+          <InsertFunction FunctionName="TournamentModel.Store.Insert_Event">
+            <ScalarProperty Name="AutoClose" ParameterName="AutoClose" />
+            <ScalarProperty Name="EventEndDateTime" ParameterName="EventEndDateTime" />
+            <ScalarProperty Name="EventDateTime" ParameterName="EventDateTime" />
+            <ScalarProperty Name="EventNumber" ParameterName="EventNumber" />
+            <ScalarProperty Name="FK_TournamentID" ParameterName="FK_TournamentID" />
+            <ScalarProperty Name="EventName" ParameterName="EventName" />
+          </InsertFunction>
+        </ModificationFunctionMapping>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="EventDetails">
+      <EntityTypeMapping TypeName="TournamentModel.EventDetail">
+        <MappingFragment StoreEntitySet="EventDetail">
+          <ScalarProperty Name="EventDetailID" ColumnName="EventDetailID" />
+          <ScalarProperty Name="FK_EventID" ColumnName="FK_EventID" />
+          <ScalarProperty Name="FK_EventDetailStatusID" ColumnName="FK_EventDetailStatusID" />
+          <ScalarProperty Name="EventDetailName" ColumnName="EventDetailName" />
+          <ScalarProperty Name="EventDetailNumber" ColumnName="EventDetailNumber" />
+          <ScalarProperty Name="EventDetailOdd" ColumnName="EventDetailOdd" />
+          <ScalarProperty Name="FinishingPosition" ColumnName="FinishingPosition" />
+          <ScalarProperty Name="FirstTimer" ColumnName="FirstTimer" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="EventDetailStatus">
+      <EntityTypeMapping TypeName="TournamentModel.EventDetailStatu">
+        <MappingFragment StoreEntitySet="EventDetailStatus">
+          <ScalarProperty Name="EventDetailStatusID" ColumnName="EventDetailStatusID" />
+          <ScalarProperty Name="EventDetailStatusName" ColumnName="EventDetailStatusName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Tournaments">
+      <EntityTypeMapping TypeName="TournamentModel.Tournament">
+        <MappingFragment StoreEntitySet="Tournament">
+          <ScalarProperty Name="TournamentID" ColumnName="TournamentID" />
+          <ScalarProperty Name="TournamentName" ColumnName="TournamentName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+      <EntityTypeMapping TypeName="TournamentModel.Tournament">
+        <ModificationFunctionMapping>
+          <InsertFunction FunctionName="TournamentModel.Store.Insert_Tournament">
+            <ScalarProperty Name="TournamentName" ParameterName="TournamentName" />
+          </InsertFunction>
+          <UpdateFunction FunctionName="TournamentModel.Store.Update_Tournament">
+            <ScalarProperty Name="TournamentName" ParameterName="TournamentName" Version="Current" />
+            <ScalarProperty Name="TournamentID" ParameterName="TournamentID" Version="Current" />
+          </UpdateFunction>
+          <DeleteFunction FunctionName="TournamentModel.Store.Delete_Tournament">
+            <ScalarProperty Name="TournamentID" ParameterName="TournamentID" />
+          </DeleteFunction>
+        </ModificationFunctionMapping>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserAccounts">
+      <EntityTypeMapping TypeName="TournamentModel.UserAccount">
+        <MappingFragment StoreEntitySet="UserAccount">
+          <ScalarProperty Name="UserAccountRole" ColumnName="UserAccountRole" />
+          <ScalarProperty Name="UserAccountID" ColumnName="UserAccountID" />
+          <ScalarProperty Name="UserAccountName" ColumnName="UserAccountName" />
+          <ScalarProperty Name="UserAccountPassword" ColumnName="UserAccountPassword" />
+        </MappingFragment>
+      </EntityTypeMapping>
+      <EntityTypeMapping TypeName="TournamentModel.UserAccount">
+        <ModificationFunctionMapping>
+          <InsertFunction FunctionName="TournamentModel.Store.Insert_User">
+            <ScalarProperty Name="UserAccountRole" ParameterName="Role" />
+            <ScalarProperty Name="UserAccountPassword" ParameterName="Password" />
+            <ScalarProperty Name="UserAccountName" ParameterName="UserName" />
+          </InsertFunction>
+        </ModificationFunctionMapping>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="Validate_User" FunctionName="TournamentModel.Store.Validate_User" />
+    <FunctionImportMapping FunctionImportName="ValidateUser" FunctionName="TournamentModel.Store.Validate_User" />
+    <FunctionImportMapping FunctionImportName="Insert_Tournament" FunctionName="TournamentModel.Store.Insert_Tournament" />
+    <FunctionImportMapping FunctionImportName="Update_Tournament" FunctionName="TournamentModel.Store.Update_Tournament" />
+    <FunctionImportMapping FunctionImportName="Delete_Tournament" FunctionName="TournamentModel.Store.Delete_Tournament" />
+    <FunctionImportMapping FunctionImportName="Insert_Event" FunctionName="TournamentModel.Store.Insert_Event" />
+    <FunctionImportMapping FunctionImportName="Insert_User" FunctionName="TournamentModel.Store.Insert_User" />
+  </EntityContainerMapping>
+</Mapping>

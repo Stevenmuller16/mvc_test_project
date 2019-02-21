@@ -1,0 +1,39 @@
+﻿@model IEnumerable<MVC_Challenge.UserAccount>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.UserAccountName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UserAccountPassword)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.UserAccountName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UserAccountPassword)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.UserAccountID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.UserAccountID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.UserAccountID })
+        </td>
+    </tr>
+}
+
+</table>

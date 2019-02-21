@@ -1,0 +1,49 @@
+﻿
+@model IEnumerable<MVC_Challenge.Post>
+
+@{
+    ViewBag.Title = "Blog Posts";
+}
+
+
+
+
+    
+<div class="container CreateAccBody pt-5">
+    <div>
+        <h4><a class="nameColor" href="/Post/CreatePost">Create New Post</a></h4>
+    </div>
+    @foreach (Post post in Model)
+    {
+        <div class="card" style="width:100%;">
+            <div class="well backgroundMod pt-5">
+                <div class="media">
+                    <a class="pull-left px-3 pb-3" href="#">
+                        <div style="width:300px; height:300px;">
+                            <img class="media-object" style="width:300px; height:300px;" src="@post.PostImage">
+                        </div>
+                    </a>
+                    <div class="media-body">
+                        <h4 class="media-heading">@post.PostTitle</h4>
+                        <p>@post.PostBody.Substring(0, Math.Min(post.PostBody.Length, 100))...</p>
+                        <ul class="list-inline list-unstyled">
+                            <li>
+                                <span>
+                                    <i class="glyphicon glyphicon-calendar"></i>
+                                    |  @Html.ActionLink("Read Full Story", "SinglePost", "Post", new { @id = post.PostID}, new {@class = "nameColor" })
+                                </span>
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    <a class="btn float-center" href="/Post/Posts/3" style=" color: black;background-color: rgb(200,90,20);margin:auto; font-weight:600;">Load More Posts</a>
+   
+</div>
+    
+     
+

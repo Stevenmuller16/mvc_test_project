@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="TournamentModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Event">
+    <Key>
+      <PropertyRef Name="EventID" />
+    </Key>
+    <Property Name="EventID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FK_TournamentID" Type="bigint" />
+    <Property Name="EventName" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="EventNumber" Type="smallint" />
+    <Property Name="EventDateTime" Type="datetime" />
+    <Property Name="EventEndDateTime" Type="datetime" />
+    <Property Name="AutoClose" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="EventDetail">
+    <Key>
+      <PropertyRef Name="EventDetailID" />
+    </Key>
+    <Property Name="EventDetailID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FK_EventID" Type="bigint" />
+    <Property Name="FK_EventDetailStatusID" Type="smallint" />
+    <Property Name="EventDetailName" Type="nvarchar" MaxLength="50" />
+    <Property Name="EventDetailNumber" Type="smallint" />
+    <Property Name="EventDetailOdd" Type="decimal" Precision="18" Scale="7" />
+    <Property Name="FinishingPosition" Type="smallint" />
+    <Property Name="FirstTimer" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="EventDetailStatus">
+    <Key>
+      <PropertyRef Name="EventDetailStatusID" />
+    </Key>
+    <Property Name="EventDetailStatusID" Type="smallint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="EventDetailStatusName" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="Tournament">
+    <Key>
+      <PropertyRef Name="TournamentID" />
+    </Key>
+    <Property Name="TournamentID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TournamentName" Type="nvarchar" MaxLength="200" />
+  </EntityType>
+  <EntityType Name="UserAccount">
+    <Key>
+      <PropertyRef Name="UserAccountID" />
+    </Key>
+    <Property Name="UserAccountID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserAccountName" Type="nvarchar" MaxLength="50" />
+    <Property Name="UserAccountPassword" Type="nvarchar" MaxLength="50" />
+    <Property Name="UserAccountRole" Type="nvarchar" MaxLength="20" />
+  </EntityType>
+  <Association Name="FK_Event_Tournament">
+    <End Role="Tournament" Type="Self.Tournament" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Event" Type="Self.Event" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Tournament">
+        <PropertyRef Name="TournamentID" />
+      </Principal>
+      <Dependent Role="Event">
+        <PropertyRef Name="FK_TournamentID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_EventDetail_Event">
+    <End Role="Event" Type="Self.Event" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="EventDetail" Type="Self.EventDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Event">
+        <PropertyRef Name="EventID" />
+      </Principal>
+      <Dependent Role="EventDetail">
+        <PropertyRef Name="FK_EventID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_EventDetail_EventDetailStatus">
+    <End Role="EventDetailStatus" Type="Self.EventDetailStatus" Multiplicity="0..1" />
+    <End Role="EventDetail" Type="Self.EventDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="EventDetailStatus">
+        <PropertyRef Name="EventDetailStatusID" />
+      </Principal>
+      <Dependent Role="EventDetail">
+        <PropertyRef Name="FK_EventDetailStatusID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Function Name="Delete_Tournament" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="TournamentID" Type="bigint" Mode="In" />
+  </Function>
+  <Function Name="Insert_Event" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="EventName" Type="nvarchar" Mode="In" />
+    <Parameter Name="FK_TournamentID" Type="bigint" Mode="In" />
+    <Parameter Name="EventNumber" Type="int" Mode="In" />
+    <Parameter Name="EventDateTime" Type="datetime" Mode="In" />
+    <Parameter Name="EventEndDateTime" Type="datetime" Mode="In" />
+    <Parameter Name="AutoClose" Type="bit" Mode="In" />
+  </Function>
+  <Function Name="Insert_Tournament" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="TournamentName" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="Insert_User" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="UserName" Type="nvarchar" Mode="In" />
+    <Parameter Name="Password" Type="nvarchar" Mode="In" />
+    <Parameter Name="Role" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="Update_Tournament" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="TournamentID" Type="bigint" Mode="In" />
+    <Parameter Name="TournamentName" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="Validate_User" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="Username" Type="nvarchar" Mode="In" />
+    <Parameter Name="Password" Type="nvarchar" Mode="In" />
+  </Function>
+  <EntityContainer Name="TournamentModelStoreContainer">
+    <EntitySet Name="Event" EntityType="Self.Event" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="EventDetail" EntityType="Self.EventDetail" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="EventDetailStatus" EntityType="Self.EventDetailStatus" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Tournament" EntityType="Self.Tournament" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="UserAccount" EntityType="Self.UserAccount" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_Event_Tournament" Association="Self.FK_Event_Tournament">
+      <End Role="Tournament" EntitySet="Tournament" />
+      <End Role="Event" EntitySet="Event" />
+    </AssociationSet>
+    <AssociationSet Name="FK_EventDetail_Event" Association="Self.FK_EventDetail_Event">
+      <End Role="Event" EntitySet="Event" />
+      <End Role="EventDetail" EntitySet="EventDetail" />
+    </AssociationSet>
+    <AssociationSet Name="FK_EventDetail_EventDetailStatus" Association="Self.FK_EventDetail_EventDetailStatus">
+      <End Role="EventDetailStatus" EntitySet="EventDetailStatus" />
+      <End Role="EventDetail" EntitySet="EventDetail" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
